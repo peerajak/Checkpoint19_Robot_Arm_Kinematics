@@ -2,9 +2,9 @@
 import rospy
 from planar_3dof_control.msg import EndEffector
 from geometry_msgs.msg import Vector3
-from kinematics_basic_concepts.ik_planar_arm import calculate_ik
-from kinematics_basic_concepts.move import JointMover
-from kinematics_basic_concepts.rviz_marker import MarkerBasics
+from antropomorphic_project.ik_antropomorphic_arm import calculate_ik
+from antropomorphic_project.move_joints import JointMover
+from antropomorphic_project.rviz_marker import MarkerBasics
 
 class PlanarEndEffectorMover(object):
 
