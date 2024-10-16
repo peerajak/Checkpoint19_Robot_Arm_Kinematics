@@ -30,7 +30,7 @@ Solution 2
 
 Solution 3
 
-![alt text](task3_solution1.png)
+![alt text](task3_solution3.png)
 
 Solution 4: Impossible
 
