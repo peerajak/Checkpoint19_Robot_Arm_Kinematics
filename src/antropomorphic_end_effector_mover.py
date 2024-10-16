@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
+
 import rospy
 from planar_3dof_control.msg import EndEffector
 from geometry_msgs.msg import Vector3
-from antropomorphic_project.ik_antropomorphic_arm import calculate_ik
-from antropomorphic_project.move_joints import JointMover
-from antropomorphic_project.rviz_marker import MarkerBasics
+from ik_antropomorphic_arm import calculate_ik
+from rviz_marker import MarkerBasics
+from move_joints import JointMover
 
-class PlanarEndEffectorMover(object):
+
+class AntropomorphicEndEffectorMover(object):
 
     def __init__(self, wait_reach_goal=True):
 
@@ -29,9 +31,9 @@ class PlanarEndEffectorMover(object):
                 rospy.logwarn("Waiting for first EE command Pose in topic =" + str(ee_pose_commands_topic))
                 pass
         
-        self.Pee_x = ee_pose_commands_data.ee_xy_theta.x
-        self.Pee_y = ee_pose_commands_data.ee_xy_theta.y
-        self.chi = ee_pose_commands_data.ee_xy_theta.z
+        self.P_x = ee_pose_commands_data.ee_xy_theta.x
+        self.P_y = ee_pose_commands_data.ee_xy_theta.y
+        self.P_z = ee_pose_commands_data.ee_xy_theta.z
 
         self.elbow_pol = ee_pose_commands_data.elbow_policy.data        
 
@@ -47,36 +49,34 @@ class PlanarEndEffectorMover(object):
                 rospy.logwarn("Waiting for first EE command Pose in topic =" + str(end_effector_real_pose_topic))
                 pass
         
-        self.Pee_x_real = end_effector_real_pose_data.x
-        self.Pee_y_real = end_effector_real_pose_data.y
-        self.chi_real = end_effector_real_pose_data.z
+        self.P_x_real = end_effector_real_pose_data.x
+        self.P_y_real = end_effector_real_pose_data.y
+        self.P_z_real = end_effector_real_pose_data.z
 
     def end_effector_real_pose_clb(self,msg):
 
-        self.Pee_x_real = msg.x
-        self.Pee_y_real = msg.y
-        self.chi_real = msg.z
+        self.P_x_real = msg.x
+        self.P_y_real = msg.y
+        self.P_z_real = msg.z
 
-        rospy.loginfo("Pxx_REAL=["+str(self.Pee_x_real)+","+str(self.Pee_y_real)+"] --- CHI="+str(self.chi_real))
-        rospy.loginfo("Pxx_OBJE=["+str(self.Pee_x)+","+str(self.Pee_y)+"] --- CHI_real="+str(self.chi))
+        rospy.loginfo("Pxx_REAL=["+str(self.P_x_real)+","+str(self.P_y_real)+","+str(self.P_z_real)+"]")
+        rospy.loginfo("Pxx_OBJE=["+str(self.P_x)+","+str(self.P_y)+","+str(self.P_z)+"]")
 
     def ee_pose_commands_clb(self, msg):
 
-        self.Pee_x = msg.ee_xy_theta.x
-        self.Pee_y = msg.ee_xy_theta.y
-        self.chi = msg.ee_xy_theta.z
+        self.P_x = msg.ee_xy_theta.x
+        self.P_y = msg.ee_xy_theta.y
+        self.P_z = msg.ee_xy_theta.z
 
         self.elbow_pol = msg.elbow_policy.data
 
-        r1 = 1.0
-        r2 = 1.0
-        r3 = 1.0
+        a2 = 1.0
+        a3 = 1.0
 
-        DH_parameters={"r1":r1,
-            "r2":r2,
-            "r3":r3}
+        DH_parameters={"a2":a2,
+            "a3":a3}
 
-        theta_array, possible_solution = calculate_ik(Pee_x=self.Pee_x, Pee_y=self.Pee_y, chi=self.chi,DH_parameters=DH_parameters, elbow_config = self.elbow_pol)
+        theta_array, possible_solution = calculate_ik(P_x=self.P_x, P_y=self.P_y, P_z=self.P_z,DH_parameters=DH_parameters, elbow_configuration = self.elbow_pol)
 
         if possible_solution:
             theta_1 = theta_array[0]
@@ -84,17 +84,18 @@ class PlanarEndEffectorMover(object):
             theta_3 = theta_array[2]
 
             self.robot_mover.move_all_joints(theta_1, theta_2, theta_3)
-            self.markerbasics_object.publish_point(self.Pee_x, self.Pee_y, roll=self.chi, index=self.unique_marker_index)
+            self.markerbasics_object.publish_point(self.P_x, self.P_y, self.P_z, index=self.unique_marker_index)
             self.unique_marker_index += 1 
         else:
             rospy.logerr("NO POSSIBLE SOLUTION FOUND, Robot Cant reach that pose")
+
 
     
 
 def main():
     rospy.init_node('planar_end_effector_mover')
 
-    planar_object = PlanarEndEffectorMover()
+    antropomorphic_object = AntropomorphicEndEffectorMover()
     rospy.spin()
 
 

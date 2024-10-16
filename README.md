@@ -108,3 +108,41 @@ Note: The formula is from the book
 
 - Robotics: Modelling, Planning and Control (Advanced Textbooks in Control and Signal Processing) 2009th Edition
 by Bruno Siciliano (Author), Lorenzo Sciavicco (Author), Luigi Villani (Author), Giuseppe Oriolo (Author)
+
+
+## Task 4
+
+Terminal 1
+
+```
+source ~/simulation_ws/devel/setup.bash
+roslaunch antropomorphic_arm_gazebo main.launch
+```
+
+Terminal 2
+
+```
+rosrun rviz rviz -d /home/user/simulation_ws/src/planar_3dof_kinematics/antropomorphic_arm_description/rviz/antropomorphic_3dof.rviz
+```
+
+Terminal 3
+
+```
+roslaunch antropomorphic_project start_elipsoidal_motion.launch
+```
+
+Helper commands
+
+to run roslaunch antropomorphic_project start_elipsoidal_motion.launch   file one by one
+
+Terminal 3.1
+
+```
+rosrun antropomorphic_project elipsoidal_motion.py
+```
+
+Terminal 3.2
+
+```
+rosrun antropomorphic_project antropomorphic_end_effector_mover.py
+```

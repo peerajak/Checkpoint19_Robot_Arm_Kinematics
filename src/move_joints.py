@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import rospy
 from std_msgs.msg import Float64
 import time
@@ -71,7 +72,7 @@ class JointMover(object):
         rospy.logdebug("All Publishers READY")
 
 if __name__ == "__main__":
-    rospy.init_node('move',log_level=rospy.DEBUG)
+    rospy.init_node('move_joints',log_level=rospy.DEBUG)
     obj = JointMover()
     # Plus-plus
     theta_pos_1 = [0.7853981633974483, 0.09188093307208842, 1.0471975511965976]

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import rospy
 from geometry_msgs.msg import Vector3
 from planar_3dof_control.msg import EndEffector
@@ -84,7 +85,7 @@ class EE_Client(object):
             ee_msg.ee_xy_theta = ee_pose
             ee_msg.elbow_policy.data = elbow_policy
 
-            print("Elipse Point="+str(ee_pose)+", elbow="+str(elbow_policy))
+            #print("Elipse Point="+str(ee_pose)+", elbow="+str(elbow_policy))
             self.pub_end_effector_commads.publish(ee_msg)
 
             self._rate.sleep()

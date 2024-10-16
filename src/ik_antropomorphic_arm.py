@@ -27,7 +27,7 @@ class ComputeIk():
         else:
             assert False, "Asked for Non existen param DH name ="+str(name)
 
-    def compute_ik(self, end_effector_pose):
+    def compute_ik(self, end_effector_pose, elbow_configuration = "plus-minus"):
         
         # Initialization
         P_x = end_effector_pose.P_x
@@ -38,7 +38,7 @@ class ComputeIk():
         a2 = self.get_dh_param("a2")
         a3 = self.get_dh_param("a3")
 
-        print("Input Data")
+        print("Input Data : elbow config: "+elbow_configuration)
         print("P_x = "+str(P_x))
         print("P_y = "+str(P_y))
         print("P_z = "+str(P_z))       
@@ -65,12 +65,23 @@ class ComputeIk():
         theta1_2 = theta1_1  - pi if P_y >= 0 else theta1_1 + pi # theta1_II solution
 
         solution1 = [{'config': 'none','theta': theta1_1}, {'config': 'plus','theta':theta2_3pos_1}, {'config': 'plus','theta':theta_3_positive}]
-        solution2 = [{'config': 'none','theta': theta1_1}, {'config': 'minus','theta':theta2_3neg_1}, {'config': 'minus','theta':theta_3_negative}]
-        solution3 = [{'config': 'none','theta': theta1_2}, {'config': 'plus','theta':theta2_3pos_2}, {'config': 'plus','theta':theta_3_positive}]
+        solution2 = [{'config': 'none','theta': theta1_1}, {'config': 'plus','theta':theta2_3neg_1}, {'config': 'minus','theta':theta_3_negative}]
+        solution3 = [{'config': 'none','theta': theta1_2}, {'config': 'minus','theta':theta2_3pos_2}, {'config': 'plus','theta':theta_3_positive}]
         solution4 = [{'config': 'none','theta': theta1_2}, {'config': 'minus','theta':theta2_3neg_2}, {'config': 'minus','theta':theta_3_negative}]
         list_raw_solutions = [solution1, solution2, solution3, solution4]
 
-        return list_raw_solutions
+        for sol in list_raw_solutions:
+            theta1 = sol[0].get('theta')
+            theta2 = sol[1].get('theta')
+            config2 = sol[1].get('config')
+            theta3 = sol[2].get('theta')
+            config3 = sol[2].get('config')
+            is_possible, possible_message = is_possible_solution(theta2, theta3)
+
+            if config2 +"-" + config3 ==  elbow_configuration:
+                break        
+
+        return [theta1, theta2, theta3], is_possible ,possible_message
 
 def is_possible_solution(theta2, theta3):
     if -pi/4 <= theta2 <= 3*pi/4:
@@ -89,29 +100,22 @@ def is_possible_solution(theta2, theta3):
     return is_possible , message
 
 
-def calculate_ik(P_x, P_y, P_z, DH_parameters):
+def calculate_ik(P_x, P_y, P_z, DH_parameters, elbow_configuration = "plus-minus"):
 
     ik = ComputeIk(DH_parameters = DH_parameters)
     end_effector_pose = EndEffectorWorkingSpace(P_x = P_x, P_y = P_y, P_z = P_z)
-    raw_solutions = ik.compute_ik(  end_effector_pose=end_effector_pose)
+    solution , is_possible, message = ik.compute_ik(  end_effector_pose=end_effector_pose, elbow_configuration= elbow_configuration)
+    theta1 = solution[0]
+    theta2 = solution[1]
+    theta3 = solution[2]
+    if is_possible:
+        #print(f"Solution {i} theta1: {theta1}, theta2: {theta2} config: {config2}, theta3: {theta3} config: {config3}")
+        print(f"Angle theta solved =[{theta1},{theta2},{theta3}], solution possible: True")
+    else:
+        #print(f"*** Not possible solution: {message}, Solution {i} theta1: {theta1}, theta2: {theta2} config: {config2}, theta3: {theta3} config: {config3}")
+        print(f"Angle theta solved =[{theta1},{theta2},{theta3}], solution possible: False. " + message)
 
-    i = 0
-    for sol in raw_solutions:
-        i += 1
-        theta1 = sol[0].get('theta')
-        theta2 = sol[1].get('theta')
-        config2 = sol[1].get('config')
-        theta3 = sol[2].get('theta')
-        config3 = sol[2].get('config')
-        is_possible, message = is_possible_solution(theta2, theta3)
-        if is_possible:
-            #print(f"Solution {i} theta1: {theta1}, theta2: {theta2} config: {config2}, theta3: {theta3} config: {config3}")
-            print(f"Angle theta solved =[{theta1},{theta2},{theta3}], solution possible: True")
-        else:
-            #print(f"*** Not possible solution: {message}, Solution {i} theta1: {theta1}, theta2: {theta2} config: {config2}, theta3: {theta3} config: {config3}")
-            print(f"Angle theta solved =[{theta1},{theta2},{theta3}], solution possible: False")
-
-    return raw_solutions
+    return solution, is_possible
 
 if __name__ == '__main__':
     
@@ -129,4 +133,9 @@ if __name__ == '__main__':
     P_y = 0.6
     P_z = 0.7
 
-    calculate_ik(P_x=P_x, P_y=P_y, P_z = P_z, DH_parameters = DH_parameters)
+    config_space = ['plus', 'minus']
+
+    for theta2_config in config_space:
+        for theta3_config in config_space:
+            config_type = theta2_config + "-" + theta3_config
+            calculate_ik(P_x=P_x, P_y=P_y, P_z = P_z, DH_parameters = DH_parameters, elbow_configuration = config_type)
