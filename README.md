@@ -34,9 +34,7 @@ Solution 3
 
 Solution 4: Impossible
 
-Solution 2
-
-![alt text](task3_sol4_impossible)
+![alt text](task3_sol4_impossible.png)
 
 As a comparison, all thetas = zeros forward kinematic 
 
