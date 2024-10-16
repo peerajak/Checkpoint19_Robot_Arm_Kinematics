@@ -72,7 +72,7 @@ A03_evaluated = A03_simplify.subs(theta_1,theta_1_val).subs(theta_2,theta_2_val)
 
 # We save
 preview(A03_simplify, viewer='file', filename="A03_simplify.png", dvioptions=['-D','300'])
-preview(A03_evaluated, viewer='file', filename="A03_evaluated.png", dvioptions=['-D','300'])
+preview(A03_evaluated, viewer='file', filename="A03_simplify_evaluated.png", dvioptions=['-D','300'])
 
 X_submatrix = A03_evaluated[0:3,0]
 Y_submatrix = A03_evaluated[0:3,1]

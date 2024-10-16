@@ -9,12 +9,48 @@ cd ~/catkin_ws
 rosrun antropomorphic_project generate_matrixes.py
 ```
 
+Result
+
+A01.png
+
+![alt text](A01.png)
+
+A12.png
+
+![alt text](A12.png)
+
+A23.png
+
+![alt text](A23.png)
+
+A03.png
+
+![alt text](A03.png)
+
+A03_simplify.png
+
+![alt text](A03_simplify.png)
+
 ## Task 2
 
 Terminal 1
 ```
 rosrun antropomorphic_project fk_antropomorphic_arm.py
 ```
+
+Enter the following values
+
+```
+theta1 = 2.356194490192345
+theta2 = 0.5074842211955768
+theta3 = -2.2459278597319283
+```
+
+Result
+
+A03_simplify_evaluated.png
+
+![alt text](A03_simplify_evaluated.png)
 
 ## Task 3
 
