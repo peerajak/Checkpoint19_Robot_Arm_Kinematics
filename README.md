@@ -2,6 +2,16 @@
 
 ## Task 1
 
+Problem
+
+
+![alt text](CP_19_task1.png)
+
+![alt text](CP_19_Task1_2.png)
+
+
+
+
 Terminal 1
 
 ```
@@ -32,6 +42,15 @@ A03_simplify.png
 ![alt text](A03_simplify.png)
 
 ## Task 2
+
+Problem
+
+
+![alt text](CP_19_task2.png)
+
+![alt text](CP_19_task2_2.png)
+
+
 
 Terminal 1
 ```
@@ -94,6 +113,14 @@ rosrun antropomorphic_project ik_antropomorphic_arm.py
 
 Terminal 3
 
+Problem
+
+![alt text](CP_19_task3.png)
+
+![alt text](CP_19_task3_2.png)
+
+
+
 ```
 roslaunch antropomorphic_arm_control antropomorphic_arm_sim_rqt.launch
 ```
@@ -111,6 +138,13 @@ by Bruno Siciliano (Author), Lorenzo Sciavicco (Author), Luigi Villani (Author),
 
 
 ## Task 4
+
+Problem
+
+![alt text](CP_19_task4.png)
+
+![alt text](CP_19_task4_3.png)
+
 
 Terminal 1
 
