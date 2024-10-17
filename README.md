@@ -73,6 +73,13 @@ A03_simplify_evaluated.png
 
 ## Task 3
 
+Problem
+
+![alt text](CP_19_task3.png)
+
+![alt text](CP_19_task3_2.png)
+
+
 Result
 
 Solution 1
@@ -112,14 +119,6 @@ rosrun antropomorphic_project ik_antropomorphic_arm.py
 
 
 Terminal 3
-
-Problem
-
-![alt text](CP_19_task3.png)
-
-![alt text](CP_19_task3_2.png)
-
-
 
 ```
 roslaunch antropomorphic_arm_control antropomorphic_arm_sim_rqt.launch
