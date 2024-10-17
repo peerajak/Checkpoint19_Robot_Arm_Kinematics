@@ -179,3 +179,10 @@ Terminal 3.2
 ```
 rosrun antropomorphic_project antropomorphic_end_effector_mover.py
 ```
+
+Result
+
+![alt text](CP_19_task4_result.png)
+
+
+
