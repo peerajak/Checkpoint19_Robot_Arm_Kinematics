@@ -185,4 +185,29 @@ Result
 ![alt text](CP_19_task4_result.png)
 
 
+## Home Machine
 
+Terminal 1
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch antropomorphic_arm_gazebo main.launch
+```
+
+Terminal 2
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+rosrun rviz rviz -d ./src/cp19_sim/planar_3dof_kinematics/antropomorphic_arm_description/rviz/antropomorphic_3dof.rviz
+```
+
+Terminal 3
+
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch antropomorphic_project start_elipsoidal_motion.launch
+```
